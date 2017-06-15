@@ -4,8 +4,23 @@ import (
 	"io"
 	"log"
 	"os"
+	"path"
 
 	"github.com/kiwih/npc-gen/npcserver"
+)
+
+func getExecLoc() string {
+	loc, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	return path.Dir(loc)
+}
+
+const (
+	publicDir    = "/media/public"
+	templatesDir = "/media/templates"
+	dataDir      = "/media/data"
 )
 
 func main() {
@@ -20,6 +35,7 @@ func main() {
 		panic("Can't open log file: " + err.Error())
 	}
 	log.SetOutput(io.MultiWriter(f, os.Stdout))
+	defer f.Close()
 
 	// On platforms like heroky/dokku this should be PORT, not HTTP_PORT. On Azure this should be HTTP_PLATFORM_PORT
 	serverAddress := ":" + os.Getenv("HTTP_PORT")
@@ -34,5 +50,7 @@ func main() {
 		cookieStoreSalt = "SUPER_SECRET_SALT"
 	}
 
-	npcserver.StartServer(serverAddress, cookieStoreSalt)
+	execLoc := getExecLoc()
+
+	npcserver.StartServer(execLoc+templatesDir, execLoc+publicDir, serverAddress, cookieStoreSalt)
 }

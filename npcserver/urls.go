@@ -42,11 +42,11 @@ func (u URL) Make(param ...string) string {
 	return retStr
 }
 
-func initRouter() *web.Router {
+func initRouter(publicDir string) *web.Router {
 	rootRouter := web.New(Context{})
 	rootRouter.Middleware(web.LoggerMiddleware)
 	rootRouter.Middleware(web.ShowErrorsMiddleware)
-	rootRouter.Middleware(web.StaticMiddleware("./media/public", web.StaticOption{Prefix: "/public"})) // "public" is a directory to serve files from.)
+	rootRouter.Middleware(web.StaticMiddleware(publicDir, web.StaticOption{Prefix: "/public"})) // "public" is a directory to serve files from.)
 	rootRouter.Middleware((*Context).AssignStorageMiddleware)
 	rootRouter.Middleware((*Context).AssignTemplatesAndSessionsMiddleware)
 	rootRouter.Middleware((*Context).GetErrorMessagesMiddleware)
