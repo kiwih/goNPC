@@ -12,7 +12,7 @@ func main() {
 	//Enable logger
 	logFileName := os.Getenv("LOG_FILE_NAME")
 	if len(logFileName) == 0 {
-		logFileName = "heyfyi.txt"
+		logFileName = "npcserver.log"
 	}
 
 	f, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
