@@ -3,7 +3,10 @@ package npcgen
 //An Action is something that an NPC/PC can do when it has the appropriate thing that grants this action
 //e.g. a Sword would give the sword action
 type Action struct {
+	Name       string
 	Damage     DiceFunction
+	CanUseStat AbilityScores //-1 for infinite, positive value for limit, e.g. uses Dex -1 means Dex is the usage score, finess actions will have Str/Dex at -1
+	SaveDC     AbilityScores //If a save DC is required
 	DamageType string
 
 	Range ActionRange

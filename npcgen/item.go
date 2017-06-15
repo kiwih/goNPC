@@ -13,7 +13,13 @@ type Item struct {
 	Type ItemType
 	Name string
 
-	Features []Feature //e.g. an item might increase your strength //e.g. you can stab with a dagger //e.g. you can parry with a sword
+	MinValue  int
+	MaxValue  int
+	MinWeight int
+	MaxWeight int
+
+	Attributes string
+	Features   []Feature //e.g. an item might increase your strength //e.g. you can stab with a dagger //e.g. you can parry with a sword
 }
 
 //RandomItem returns a random item
