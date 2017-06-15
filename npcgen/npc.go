@@ -5,7 +5,7 @@ type NPC struct {
 	HitPoints     DiceFunction
 	BaseStatBlock StatBlock
 
-	Race NPCRace
+	Race RaceTraits
 }
 
 //ACMod is for modif

@@ -18,5 +18,5 @@ type Item struct {
 
 //RandomItem returns a random item
 func RandomItem(t ItemType) Item {
-
+	return Item{}
 }
