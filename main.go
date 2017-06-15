@@ -28,5 +28,11 @@ func main() {
 		serverAddress = ":3000"
 	}
 
-	npcserver.StartServer(serverAddress)
+	cookieStoreSalt := os.Getenv("COOKIE_STORE_SALT")
+	if len(cookieStoreSalt) == 0 {
+		log.Println("$COOKIE_STORE_SALT was not set, defaulting to 'SUPER_SECRET_SALT'.")
+		cookieStoreSalt = "SUPER_SECRET_SALT"
+	}
+
+	npcserver.StartServer(serverAddress, cookieStoreSalt)
 }

@@ -1,0 +1,6 @@
+2017/06/15 13:55:28 $HTTP_PORT was not set, defaulting to 3000
+2017/06/15 13:55:28 $COOKIE_STORE_SALT was not set, defaulting to 'SUPER_SECRET_SALT'.
+2017/06/15 13:55:28 Server running at :3000
+2017/06/15 13:59:01 $HTTP_PORT was not set, defaulting to 3000
+2017/06/15 13:59:01 $COOKIE_STORE_SALT was not set, defaulting to 'SUPER_SECRET_SALT'.
+2017/06/15 13:59:01 Server running at :3000
