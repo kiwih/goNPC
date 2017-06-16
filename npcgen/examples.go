@@ -1,6 +1,7 @@
 package npcgen
 
 var BanditCaptain = NPC{
+	Name: "Bandit Captain",
 	BaseStatBlock: StatBlock{
 		AbilityScores: AbilityScores{
 			Str: 15,
@@ -16,6 +17,9 @@ var BanditCaptain = NPC{
 		Constant: 0,
 	},
 	Race: Human,
+	Items: []Item{
+		Dagger,
+	},
 }
 
 var Human = RaceTraits{
@@ -55,6 +59,36 @@ var NecklaceOfFireballs = Item{
 					DamageDice:   DiceFunction{Dice: RepeatDie(DieTypeD6, 8)},
 					TargetSaveDC: AbilityScores{Dex: 15},
 					MaxRange:     60,
+				},
+			},
+		},
+	},
+}
+
+var Dagger = Item{
+	Name:       "Dagger",
+	MinValue:   1,
+	MaxValue:   5,
+	MinWeight:  1,
+	MaxWeight:  1.5,
+	Attributes: "",
+	Features: []Feature{
+		{
+			Name: "Dagger",
+			Actions: []Action{
+				{
+					Name:       "Dagger (Stab)",
+					ActionType: ActionTypeMeleeAttack,
+					Finesse:    true,
+					DamageType: DamageTypePiercing,
+					DamageDice: DiceFunction{Dice: []DieType{DieTypeD4}},
+				},
+				{
+					Name:       "Dagger (Throw)",
+					ActionType: ActionTypeRangedAttack,
+					Finesse:    true,
+					DamageType: DamageTypePiercing,
+					DamageDice: DiceFunction{Dice: []DieType{DieTypeD4}},
 				},
 			},
 		},
