@@ -23,11 +23,26 @@ type StatBlock struct {
 	AbilityScores
 
 	TempHP int
-	Size   int
 	Speed  int
 }
 
 //CombineStatBlocks combines two statblocks together
 func CombineStatBlocks(a, b StatBlock) StatBlock {
-	return StatBlock{} //TODO
+	x := StatBlock{}
+	x.Str = a.Str + b.Str
+	x.Dex = a.Dex + b.Dex
+	x.Con = a.Con + b.Con
+	x.Int = a.Int + b.Int
+	x.Wis = a.Wis + b.Wis
+	x.Cha = a.Cha + b.Cha
+
+	if a.TempHP > b.TempHP {
+		x.TempHP = a.TempHP
+	} else {
+		x.TempHP = b.TempHP
+	}
+
+	x.Speed = a.Speed + b.Speed
+
+	return x
 }

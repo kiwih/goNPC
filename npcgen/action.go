@@ -7,9 +7,6 @@ const (
 	//ActionTypeMeleeAttack is for melee actions e.g. hit with a sword (uses STR)
 	ActionTypeMeleeAttack ActionType = "Melee Attack"
 
-	//ActionTypeMeleeFinesseAttack is for melee finesse attacks, e.g. hit with a scimitar (uses better of STR or DEX)
-	ActionTypeMeleeFinesseAttack ActionType = "Melee (Finesse) Attack"
-
 	//ActionTypeRangedAttack is for ranged actions e.g. i shoot with a bow (uses DEX)
 	ActionTypeRangedAttack ActionType = "Ranged Attack"
 
@@ -34,6 +31,7 @@ const (
 type Action struct {
 	Name       string
 	ActionType ActionType //we can use this to determine the attack roll modifier
+	Finesse    bool
 
 	DamageDice DiceFunction //if appropriate
 
@@ -64,19 +62,23 @@ func (a Action) AttackModifier(n NPC) int {
 
 	switch a.ActionType {
 	case ActionTypeMeleeAttack:
+		if a.Finesse && AttackDex > AttackStr {
+			return AttackDex
+		}
 		return AttackStr
-	case ActionTypeMeleeFinesseAttack:
-		if AttackStr > AttackDex {
+	case ActionTypeRangedAttack:
+		if a.Finesse && AttackStr > AttackDex {
 			return AttackStr
 		}
-		return AttackDex
-	case ActionTypeRangedAttack:
 		return AttackDex
 	case ActionTypeMeleeSpellAttack:
 		return AttackSpell
 	case ActionTypeRangedSpellAttack:
 		return AttackSpell
 	case ActionTypeThrownAttack:
+		if a.Finesse && AttackDex > AttackStr {
+			return AttackDex
+		}
 		return AttackStr
 
 	default: //shouldn't occur unless ActionType is invalid
