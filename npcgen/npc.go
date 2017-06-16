@@ -81,48 +81,24 @@ func (n NPC) AC() int {
 func (n NPC) calculateAC(a ACMod) int {
 	stats := n.StatBlock()
 	var asMod int
-	if a.AddMaxAbilityScores.Str != 0 {
-		if a.AddMaxAbilityScores.Str < 0 {
-			asMod += stats.Str.Modifier()
-		} else {
-			asMod += min(int(a.AddMaxAbilityScores.Str), stats.Str.Modifier())
+
+	clampAbilityScore := func(a AbilityScore, b int, mod *int) {
+		if a != 0 {
+			if a < 0 {
+				*mod += b
+			} else {
+				*mod += min(int(a), b)
+			}
 		}
 	}
-	if a.AddMaxAbilityScores.Dex != 0 {
-		if a.AddMaxAbilityScores.Dex < 0 {
-			asMod += stats.Dex.Modifier()
-		} else {
-			asMod += min(int(a.AddMaxAbilityScores.Dex), stats.Dex.Modifier())
-		}
-	}
-	if a.AddMaxAbilityScores.Con != 0 {
-		if a.AddMaxAbilityScores.Con < 0 {
-			asMod += stats.Con.Modifier()
-		} else {
-			asMod += min(int(a.AddMaxAbilityScores.Con), stats.Con.Modifier())
-		}
-	}
-	if a.AddMaxAbilityScores.Int != 0 {
-		if a.AddMaxAbilityScores.Int < 0 {
-			asMod += stats.Int.Modifier()
-		} else {
-			asMod += min(int(a.AddMaxAbilityScores.Int), stats.Int.Modifier())
-		}
-	}
-	if a.AddMaxAbilityScores.Wis != 0 {
-		if a.AddMaxAbilityScores.Wis < 0 {
-			asMod += stats.Wis.Modifier()
-		} else {
-			asMod += min(int(a.AddMaxAbilityScores.Wis), stats.Wis.Modifier())
-		}
-	}
-	if a.AddMaxAbilityScores.Cha != 0 {
-		if a.AddMaxAbilityScores.Cha < 0 {
-			asMod += stats.Cha.Modifier()
-		} else {
-			asMod += min(int(a.AddMaxAbilityScores.Cha), stats.Cha.Modifier())
-		}
-	}
+
+	clampAbilityScore(a.AddMaxAbilityScores.Str, stats.Str.Modifier(), &asMod)
+	clampAbilityScore(a.AddMaxAbilityScores.Dex, stats.Dex.Modifier(), &asMod)
+	clampAbilityScore(a.AddMaxAbilityScores.Con, stats.Con.Modifier(), &asMod)
+	clampAbilityScore(a.AddMaxAbilityScores.Int, stats.Int.Modifier(), &asMod)
+	clampAbilityScore(a.AddMaxAbilityScores.Wis, stats.Wis.Modifier(), &asMod)
+	clampAbilityScore(a.AddMaxAbilityScores.Cha, stats.Cha.Modifier(), &asMod)
+
 	return a.Set + a.Addition + asMod
 }
 
