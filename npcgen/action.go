@@ -26,6 +26,9 @@ const (
 
 	//ActionTypeRitual is for casting ritual spells (uses SPELL SAVE DC, if appropriate)
 	ActionTypeRitual ActionType = "Ritual"
+
+	//ActionTypeOtherMagicalItemActivation is for actions from magical items that don't fit into the above (probably uses internal FIXED SAVE DC, if appropriate)
+	ActionTypeOtherMagicalItemActivation ActionType = "Magic Item Activation"
 )
 
 //An Action is something that an NPC/PC can do when it has the appropriate thing that grants this action
@@ -41,6 +44,7 @@ type Action struct {
 
 	UseSpellSaveDC bool          //If true, replaces the positive values in TargetSaveDC with the attackers Spell Save DC
 	TargetSaveDC   AbilityScores //If the target needs to make a save, this stores the save value (use any positive value in the appropriate slot if it's based on caster spell save dc)
+	ActionSaveVerb string
 
 	DamageType    DamageType
 	MagicalDamage bool
@@ -58,7 +62,7 @@ func (a Action) AttackModifier(n NPC) int {
 //attackVal calculates the attack / damage modifiers for an action given the attacking npc "n" and whether or not to add the proficiency bonus
 func (a Action) attackVal(n NPC, addProf bool) int {
 	//ActionTypeSpell has no modifier
-	if a.ActionType == ActionTypeSpell || a.ActionType == ActionTypeRitual {
+	if a.ActionType == ActionTypeSpell || a.ActionType == ActionTypeRitual || a.ActionType == ActionTypeOtherMagicalItemActivation {
 		return 0
 	}
 
@@ -159,22 +163,22 @@ func (a Action) AttackString(n NPC) string {
 	saves := a.SaveDC(n)
 	saveStr := ""
 	if saves.Cha > 0 {
-		saveStr += fmt.Sprintf("DC %d Charisma to half", saves.Cha)
+		saveStr += fmt.Sprintf("DC %d Charisma save to %s", saves.Cha, a.ActionSaveVerb)
 	}
 	if saves.Con > 0 {
-		saveStr += fmt.Sprintf("DC %d Constitution to half", saves.Con)
+		saveStr += fmt.Sprintf("DC %d Constitution save to %s", saves.Con, a.ActionSaveVerb)
 	}
 	if saves.Dex > 0 {
-		saveStr += fmt.Sprintf("DC %d Dexterity to half", saves.Dex)
+		saveStr += fmt.Sprintf("DC %d Dexterity save to %s", saves.Dex, a.ActionSaveVerb)
 	}
 	if saves.Int > 0 {
-		saveStr += fmt.Sprintf("DC %d Intelligence to half", saves.Int)
+		saveStr += fmt.Sprintf("DC %d Intelligence save to %s", saves.Int, a.ActionSaveVerb)
 	}
 	if saves.Str > 0 {
-		saveStr += fmt.Sprintf("DC %d Strength to half", saves.Str)
+		saveStr += fmt.Sprintf("DC %d Strength save to %s", saves.Str, a.ActionSaveVerb)
 	}
 	if saves.Wis > 0 {
-		saveStr += fmt.Sprintf("DC %d Wisdom to half", saves.Wis)
+		saveStr += fmt.Sprintf("DC %d Wisdom save to %s", saves.Wis, a.ActionSaveVerb)
 	}
 	if saveStr != "" && s != "" {
 		return s + "(" + saveStr + ")"
