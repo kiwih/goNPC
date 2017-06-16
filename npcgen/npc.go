@@ -23,20 +23,6 @@ type ACMod struct {
 	AddMaxAbilityScores AbilityScores //Allows up to this much of each abilityScore to be added to the character's AC, -1 for infinite
 }
 
-// baseAC is the way we calculate AC for someone not wearing any clothes
-var baseAC = ACMod{
-	Set:      10,
-	Addition: 0,
-	AddMaxAbilityScores: AbilityScores{
-		Str: 0,
-		Dex: -1,
-		Con: 0,
-		Int: 0,
-		Wis: 0,
-		Cha: 0,
-	},
-}
-
 //AC returns the final AC of the character
 func (n NPC) AC() int {
 	/*
@@ -66,7 +52,7 @@ func (n NPC) AC() int {
 	*/
 	// TODO: account for other acMethods
 	var acMod int
-	acMethod := baseAC
+	acMethod := BaseAC
 	return n.calculateAC(acMethod) + acMod
 }
 

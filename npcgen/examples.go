@@ -16,6 +16,9 @@ var BanditCaptain = NPC{
 		Constant: 0,
 	},
 	Race: Human,
+	Items: []Item{
+		StuddedLeather,
+	},
 }
 
 var Human = RaceTraits{
@@ -58,5 +61,49 @@ var NecklaceOfFireballs = Item{
 				},
 			},
 		},
+	},
+}
+
+var StuddedLeather = Item{
+	Name:       "Studded Leather",
+	MinValue:   45,
+	MaxValue:   45,
+	MinWeight:  13,
+	MaxWeight:  13,
+	Attributes: "",
+	Features: []Feature {
+		{
+			Name: "Armor?", // Is this needed?
+			ACModifier: StuddedLeatherAC,
+		},
+	},
+}
+
+
+// BaseAC is the way we calculate AC for someone not wearing any clothes
+var BaseAC = ACMod{
+	Set:      10,
+	Addition: 0,
+	AddMaxAbilityScores: AbilityScores{
+		Str: 0,
+		Dex: -1,
+		Con: 0,
+		Int: 0,
+		Wis: 0,
+		Cha: 0,
+	},
+}
+
+// BaseAC is the way we calculate AC for someone not wearing any clothes
+var StuddedLeatherAC = ACMod{
+	Set:      12,
+	Addition: 0,
+	AddMaxAbilityScores: AbilityScores{
+		Str: 0,
+		Dex: -1,
+		Con: 0,
+		Int: 0,
+		Wis: 0,
+		Cha: 0,
 	},
 }
