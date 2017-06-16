@@ -50,14 +50,16 @@ func (d DiceFunction) Evaluate() int {
 }
 
 //String satisfies the Stringer interface by converting the DiceFunction to a string
+// This will output something like "12 (3d6+3)"
 func (d DiceFunction) String() string {
 	lastType := DieType(-1)
 	curCount := -1
 	buildStr := ""
+
 	for i := 0; i < len(d.Dice); i++ {
 		if d.Dice[i] != lastType {
-
 			if curCount > 0 {
+				//because the dice type has changed, we can add the current accumulated dice type to the string
 				buildStr += strconv.Itoa(int(curCount)) + "d" + strconv.Itoa(int(lastType)) + " + "
 			}
 			curCount = 1
@@ -66,6 +68,8 @@ func (d DiceFunction) String() string {
 			curCount++
 		}
 	}
+
+	//We need the last line added manually because there's no change after the last die, but we still need it added
 	buildStr += strconv.Itoa(int(curCount)) + "d" + strconv.Itoa(int(lastType)) + " + "
 
 	return fmt.Sprintf("%d (%s%d)", d.Evaluate(), buildStr, d.Constant)
