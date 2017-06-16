@@ -6,7 +6,8 @@ type Feature struct {
 	Name                  string
 	Description           string
 	AbilityScoreModifiers AbilityScores
-	ACModifier            ACMod
+	ACSet                 *ACSet
+	ACModifier            int      //Adds this to character's AC no questions asked
 	Actions               []Action //e.g. you can stab with a dagger
 	Reactions             []Action //e.g. you can parry with a sword
 }
