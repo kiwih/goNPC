@@ -196,12 +196,13 @@ func (n NPC) String() string {
 	for _, feature := range features {
 		for _, action := range feature.Actions {
 			m := fmt.Sprintf(
-				"\n%s (%s) (%s) %s, %s, Hit: %s %s damage",
+				"\n%s (%s) (%s) %s, %s, %s, Hit: %s %s damage",
 				feature.Name,
 				action.Name,
 				action.ActionType,
 				action.AttackString(n),
 				action.RangeString(),
+				action.ActionTarget,
 				action.DamageString(n),
 				action.DamageTypeString(),
 			)

@@ -31,12 +31,24 @@ const (
 	ActionTypeOtherMagicalItemActivation ActionType = "Magic Item Activation"
 )
 
+//An ActionTarget describes what the action hits
+type ActionTarget string
+
+const (
+	//ActionTargetSingle = action has a single target, like a stab from a dagger
+	ActionTargetSingle = "single target"
+
+	//ActionTarget20ftRadius = action has a twenty foot radius, like an aoe spell like fireball
+	ActionTarget20ftRadius = "20ft radius"
+)
+
 //An Action is something that an NPC/PC can do when it has the appropriate thing that grants this action
 //e.g. a Sword would give the sword action
 type Action struct {
-	Name       string
-	ActionType ActionType //we can use this to determine the attack roll modifier
-	Finesse    bool
+	Name         string
+	ActionType   ActionType //we can use this to determine the attack roll modifier
+	ActionTarget ActionTarget
+	Finesse      bool
 
 	DamageDice DiceFunction //if appropriate
 
