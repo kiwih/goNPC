@@ -1,5 +1,10 @@
 package npcgen
 
+import (
+	"fmt"
+	"strconv"
+)
+
 //DieType stores the type of a die
 type DieType int
 
@@ -42,4 +47,23 @@ func (d DiceFunction) Evaluate() int {
 	}
 	sum = sum / 2
 	return sum + d.Constant
+}
+
+//String satisfies the Stringer interface by converting the DiceFunction to a string
+func (d DiceFunction) String() string {
+	lastType := DieType(-1)
+	curCount := 0
+	buildStr := ""
+	for i := 0; i < len(d.Dice); i++ {
+		if d.Dice[i] != lastType || i == len(d.Dice)-1 {
+			if curCount > 0 {
+				buildStr += strconv.Itoa(int(curCount)) + "d" + strconv.Itoa(int(lastType))
+			}
+			curCount = 0
+			lastType = d.Dice[i]
+		} else {
+			curCount++
+		}
+	}
+	return fmt.Sprintf("%d (%s + %d)", d.Evaluate(), buildStr, d.Constant)
 }

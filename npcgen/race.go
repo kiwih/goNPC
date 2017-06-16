@@ -6,9 +6,9 @@ type RaceTraits struct {
 	Size  string
 	Type  string
 
-	AbilityScoreIncreases AbilityScores
-	AdultAge              int
-	MaxAge                int
+	StatBlockMods StatBlock
+	AdultAge      int
+	MaxAge        int
 
 	RacialFeatures []Feature
 }

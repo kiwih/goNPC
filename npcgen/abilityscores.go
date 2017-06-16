@@ -15,7 +15,7 @@ type AbilityScores struct {
 
 //Modifier allows us to compute the modifier value on a AbilityScore
 func (a AbilityScore) Modifier() int {
-	return 0
+	return (int(a) - 10) / 2
 }
 
 //StatBlock is to be used on items, NPCs, races etc to enable calculation of NPC / PC final stats

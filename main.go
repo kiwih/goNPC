@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"os"
 	"path"
 
+	"github.com/kiwih/npc-gen/npcgen"
 	"github.com/kiwih/npc-gen/npcserver"
 )
 
@@ -51,6 +53,8 @@ func main() {
 	}
 
 	execLoc := getExecLoc()
+
+	fmt.Println(npcgen.BanditCaptain.String())
 
 	npcserver.StartServer(execLoc+templatesDir, execLoc+publicDir, serverAddress, cookieStoreSalt)
 }
