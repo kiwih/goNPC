@@ -87,7 +87,7 @@ var Dagger = Item{
 				},
 				{
 					Name:       "Dagger (Throw)",
-					ActionType: ActionTypeRangedWeaponAttack,
+					ActionType: ActionTypeThrownWeaponAttack,
 					Finesse:    true,
 					DamageType: DamageTypePiercing,
 					DamageDice: DiceFunction{Dice: []DieType{DieTypeD4}},

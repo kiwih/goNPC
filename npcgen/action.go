@@ -18,8 +18,8 @@ const (
 	//ActionTypeRangedSpellAttack is for ranged spell attacks that use spell modifier for attack roll e.g. ray of frost (uses SPELL MOD)
 	ActionTypeRangedSpellAttack ActionType = "Ranged Spell Attack"
 
-	//ActionTypeThrownAttack is for attack rolls that are thrown, e.g. I throw the javelin (uses STR)
-	ActionTypeThrownAttack ActionType = "Thrown Attack"
+	//ActionTypeThrownWeaponAttack is for attack rolls that are thrown, e.g. I throw the javelin (uses STR)
+	ActionTypeThrownWeaponAttack ActionType = "Thrown Weapon Attack"
 
 	//ActionTypeSpell is for spell actions that aren't attacks, or are AOE, e.g. I use dissonant whispers / I throw a fireball (uses SPELL SAVE DC, if appropriate)
 	ActionTypeSpell ActionType = "Spell"
@@ -83,7 +83,7 @@ func (a Action) attackVal(n NPC, addProf bool) int {
 		return AttackSpell
 	case ActionTypeRangedSpellAttack:
 		return AttackSpell
-	case ActionTypeThrownAttack:
+	case ActionTypeThrownWeaponAttack:
 		if a.Finesse && AttackDex > AttackStr {
 			return AttackDex
 		}
