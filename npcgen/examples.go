@@ -19,6 +19,7 @@ var BanditCaptain = NPC{
 	Race: Human,
 	Items: []Item{
 		Dagger,
+		StuddedLeather,
 	},
 }
 
@@ -92,5 +93,37 @@ var Dagger = Item{
 				},
 			},
 		},
+	},
+}
+var StuddedLeather = Item{
+	Name:       "Studded Leather",
+	MinValue:   45,
+	MaxValue:   45,
+	MinWeight:  13,
+	MaxWeight:  13,
+	Attributes: "",
+	Features: []Feature{
+		{
+			Name:       "Armor?", // Is this needed?
+			ACModifier: StuddedLeatherAC,
+		},
+	},
+}
+
+// BaseAC is the way we calculate AC for someone not wearing any clothes
+var BaseAC = ACMod{
+	Set:      10,
+	Addition: 0,
+	AddMaxAbilityScores: AbilityScores{
+		Dex: AbilityScoreUnlimited,
+	},
+}
+
+// BaseAC is the way we calculate AC for someone not wearing any clothes
+var StuddedLeatherAC = ACMod{
+	Set:      12,
+	Addition: 0,
+	AddMaxAbilityScores: AbilityScores{
+		Dex: AbilityScoreUnlimited,
 	},
 }

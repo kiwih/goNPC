@@ -3,6 +3,11 @@ package npcgen
 //AbilityScore is a handy type which allows us to easily compute modifier values
 type AbilityScore int
 
+const (
+	//AbilityScoreUnlimited is used when tagging ability score meta information that they can go to infinity
+	AbilityScoreUnlimited AbilityScore = -1
+)
+
 //AbilityScores are used to hold the default six scores
 type AbilityScores struct {
 	Str AbilityScore
