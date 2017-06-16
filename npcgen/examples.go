@@ -20,6 +20,7 @@ var BanditCaptain = NPC{
 	Items: []Item{
 		Dagger,
 		StuddedLeather,
+		Shield,
 	},
 }
 
@@ -105,9 +106,8 @@ var StuddedLeather = Item{
 	Features: []Feature{
 		{
 			Name: "Studded Leather AC",
-			ACModifier: ACMod{
-				Set:      12,
-				Addition: 0,
+			ACSet: &ACSet{
+				Base: 12,
 				AddMaxAbilityScores: AbilityScores{
 					Dex: AbilityScoreUnlimited,
 				},
@@ -126,19 +126,16 @@ var PlusOneStuddedLeather = Item{
 	Features: []Feature{
 		{
 			Name: "Studded Leather AC",
-			ACModifier: ACMod{
-				Set:      12,
-				Addition: 0,
+			ACSet: &ACSet{
+				Base: 12,
 				AddMaxAbilityScores: AbilityScores{
 					Dex: AbilityScoreUnlimited,
 				},
 			},
 		},
 		{
-			Name: "Plus One Bonus",
-			ACModifier: ACMod{
-				Addition: 1,
-			},
+			Name:       "Plus One Bonus",
+			ACModifier: 1,
 		},
 	},
 }
@@ -153,18 +150,15 @@ var Shield = Item{
 	Attributes: "",
 	Features: []Feature{
 		{
-			Name: "Shield AC",
-			ACModifier: ACMod{
-				Addition: 2,
-			},
+			Name:       "Shield AC",
+			ACModifier: 1,
 		},
 	},
 }
 
 // BaseAC is the way we calculate AC for someone not wearing any clothes
-var BaseAC = ACMod{
-	Set:      10,
-	Addition: 0,
+var BaseAC = ACSet{
+	Base: 10,
 	AddMaxAbilityScores: AbilityScores{
 		Dex: AbilityScoreUnlimited,
 	},

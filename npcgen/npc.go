@@ -16,11 +16,9 @@ type NPC struct {
 	Items []Item
 }
 
-//ACMod is for modifying a character's base AC
-type ACMod struct {
-	Set      int //Sets base AC of character to this value
-	Addition int //Adds this to character's AC no questions asked
-
+//ACSet is used to create methods for determining a character's AC
+type ACSet struct {
+	Base                int           //Sets base AC of character to this value
 	AddMaxAbilityScores AbilityScores //Allows up to this much of each abilityScore to be added to the character's AC, -1 or AbilityScoreUnlimited for infinite
 }
 
@@ -54,13 +52,23 @@ func (n NPC) AC() int {
 	// TODO: account for other acMethods
 	var acMod int
 	acMethod := BaseAC
+	for _, item := range n.Items {
+		for _, feature := range item.Features {
+			if feature.ACSet != nil {
+				if n.calculateAC(*feature.ACSet) > n.calculateAC(acMethod) {
+					acMethod = *feature.ACSet
+				}
+			}
+			acMod += feature.ACModifier
+		}
+	}
 	return n.calculateAC(acMethod) + acMod
 }
 
 // calculateAC finds the AC of a character given a specific method of calculating AC
-func (n NPC) calculateAC(a ACMod) int {
+func (n NPC) calculateAC(a ACSet) int {
 	stats := n.StatBlock()
-	var asMod int
+	var abilityScoreMod int
 
 	// It's weird that this is necessary
 	min := func(x, y int) int {
@@ -80,14 +88,14 @@ func (n NPC) calculateAC(a ACMod) int {
 		return 0
 	}
 
-	asMod += clampAbilityScore(a.AddMaxAbilityScores.Str, stats.Str.Modifier())
-	asMod += clampAbilityScore(a.AddMaxAbilityScores.Dex, stats.Dex.Modifier())
-	asMod += clampAbilityScore(a.AddMaxAbilityScores.Con, stats.Con.Modifier())
-	asMod += clampAbilityScore(a.AddMaxAbilityScores.Int, stats.Int.Modifier())
-	asMod += clampAbilityScore(a.AddMaxAbilityScores.Wis, stats.Wis.Modifier())
-	asMod += clampAbilityScore(a.AddMaxAbilityScores.Cha, stats.Cha.Modifier())
+	abilityScoreMod += clampAbilityScore(a.AddMaxAbilityScores.Str, stats.Str.Modifier())
+	abilityScoreMod += clampAbilityScore(a.AddMaxAbilityScores.Dex, stats.Dex.Modifier())
+	abilityScoreMod += clampAbilityScore(a.AddMaxAbilityScores.Con, stats.Con.Modifier())
+	abilityScoreMod += clampAbilityScore(a.AddMaxAbilityScores.Int, stats.Int.Modifier())
+	abilityScoreMod += clampAbilityScore(a.AddMaxAbilityScores.Wis, stats.Wis.Modifier())
+	abilityScoreMod += clampAbilityScore(a.AddMaxAbilityScores.Cha, stats.Cha.Modifier())
 
-	return a.Set + a.Addition + asMod
+	return a.Base + abilityScoreMod
 }
 
 //HP returns the final max hitpoints of the character
