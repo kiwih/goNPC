@@ -1,20 +1,22 @@
 package npcgen
 
+import "fmt"
+
 //An ActionType is used for identifying the kind of action this is
 type ActionType string
 
 const (
-	//ActionTypeMeleeAttack is for melee actions e.g. hit with a sword (uses STR)
-	ActionTypeMeleeAttack ActionType = "Melee Attack"
+	//ActionTypeMeleeWeaponAttack is for melee actions e.g. hit with a sword (uses STR)
+	ActionTypeMeleeWeaponAttack ActionType = "Melee Weapon Attack"
 
-	//ActionTypeRangedAttack is for ranged actions e.g. i shoot with a bow (uses DEX)
-	ActionTypeRangedAttack ActionType = "Ranged Attack"
+	//ActionTypeRangedWeaponAttack is for ranged actions e.g. i shoot with a bow (uses DEX)
+	ActionTypeRangedWeaponAttack ActionType = "Ranged Weapon Attack"
 
 	//ActionTypeMeleeSpellAttack is for melee spell attack actions that use spell modifier for attack roll e.g. shocking grasp (uses SPELL MOD)
-	ActionTypeMeleeSpellAttack ActionType = "Melee (Spell) Attack"
+	ActionTypeMeleeSpellAttack ActionType = "Melee Spell Attack"
 
 	//ActionTypeRangedSpellAttack is for ranged spell attacks that use spell modifier for attack roll e.g. ray of frost (uses SPELL MOD)
-	ActionTypeRangedSpellAttack ActionType = "Ranged (Spell) Attack"
+	ActionTypeRangedSpellAttack ActionType = "Ranged Spell Attack"
 
 	//ActionTypeThrownAttack is for attack rolls that are thrown, e.g. I throw the javelin (uses STR)
 	ActionTypeThrownAttack ActionType = "Thrown Attack"
@@ -41,12 +43,18 @@ type Action struct {
 	DamageType    DamageType
 	MagicalDamage bool
 
+	Reach      bool
 	ShortRange int //if set, the time which separates an attack from an attack with disadvantage
 	MaxRange   int //the maximum range for an attack, if ShortRange is set, this is the range that attacks will have disadv, if not set, this is the max range
 }
 
 //AttackModifier calculates the attack modifier for an action given the attacking npc "n"
 func (a Action) AttackModifier(n NPC) int {
+	return a.attackVal(n, true)
+}
+
+//attackVal calculates the attack / damage modifiers for an action given the attacking npc "n" and whether or not to add the proficiency bonus
+func (a Action) attackVal(n NPC, addProf bool) int {
 	//ActionTypeSpell has no modifier
 	if a.ActionType == ActionTypeSpell || a.ActionType == ActionTypeRitual {
 		return 0
@@ -54,19 +62,19 @@ func (a Action) AttackModifier(n NPC) int {
 
 	//Actions need to depend on ability scores, e.g. when casting a spell we use spellcasting ability, etc, thrown weapons vs other things etc
 
-	AttackStr := n.StrAttackModifier(true) //we assume that NPCs don't ever attack with things they aren't proficient with
-	AttackDex := n.DexAttackModifier(true)
-	AttackSpell := n.SpellAttackModifier(true)
+	AttackStr := n.StrAttackModifier(addProf) //we assume that NPCs don't ever attack with things they aren't proficient with
+	AttackDex := n.DexAttackModifier(addProf)
+	AttackSpell := n.SpellAttackModifier(addProf)
 
 	//Based on the player stats, and the type of action, calculate the attack modifier
 
 	switch a.ActionType {
-	case ActionTypeMeleeAttack:
+	case ActionTypeMeleeWeaponAttack:
 		if a.Finesse && AttackDex > AttackStr {
 			return AttackDex
 		}
 		return AttackStr
-	case ActionTypeRangedAttack:
+	case ActionTypeRangedWeaponAttack:
 		if a.Finesse && AttackStr > AttackDex {
 			return AttackStr
 		}
@@ -111,4 +119,25 @@ func (a Action) SaveDC(n NPC) AbilityScores {
 		return s
 	}
 	return a.TargetSaveDC
+}
+
+//RangeString formats the range information for the action into something easy to read
+func (a Action) RangeString() string {
+	if a.ShortRange != 0 {
+		return fmt.Sprintf("range %d/%d ft.", a.ShortRange, a.MaxRange)
+	}
+	if a.MaxRange != 0 {
+		return fmt.Sprintf("range %d ft.", a.MaxRange)
+	}
+	if a.Reach {
+		return "reach 10 ft."
+	}
+	return "reach 5 ft."
+}
+
+//Damage returns the DamageDice function taking into account all player stats
+func (a Action) Damage(n NPC) DiceFunction {
+	d := a.DamageDice
+	d.Constant += a.attackVal(n, false)
+	return d
 }

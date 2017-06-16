@@ -12,6 +12,7 @@ var BanditCaptain = NPC{
 			Cha: 14,
 		},
 	},
+	ConstantProficiencyModifier: -2,
 	HitPoints: DiceFunction{
 		Dice:     RepeatDie(DieTypeD8, 10),
 		Constant: 0,
@@ -79,14 +80,14 @@ var Dagger = Item{
 			Actions: []Action{
 				{
 					Name:       "Dagger (Stab)",
-					ActionType: ActionTypeMeleeAttack,
+					ActionType: ActionTypeMeleeWeaponAttack,
 					Finesse:    true,
 					DamageType: DamageTypePiercing,
 					DamageDice: DiceFunction{Dice: []DieType{DieTypeD4}},
 				},
 				{
 					Name:       "Dagger (Throw)",
-					ActionType: ActionTypeRangedAttack,
+					ActionType: ActionTypeRangedWeaponAttack,
 					Finesse:    true,
 					DamageType: DamageTypePiercing,
 					DamageDice: DiceFunction{Dice: []DieType{DieTypeD4}},
