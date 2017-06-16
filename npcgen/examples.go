@@ -15,6 +15,26 @@ var BanditCaptain = NPC{
 		Dice:     RepeatDie(DieTypeD8, 10),
 		Constant: 0,
 	},
+	Race: Human,
+}
+
+var Human = RaceTraits{
+	Speed: 30,
+	Size:  "Medium",
+	Type:  "humanoid",
+
+	StatBlockMods: StatBlock{
+		AbilityScores: AbilityScores{
+			Str: 1,
+			Dex: 1,
+			Con: 1,
+			Int: 1,
+			Wis: 1,
+			Cha: 1,
+		},
+	},
+	AdultAge: 18,
+	MaxAge:   80,
 }
 
 var NecklaceOfFireballs = Item{
