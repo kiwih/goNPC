@@ -40,10 +40,11 @@ type DiceFunction struct {
 }
 
 //Evaluate returns the sum of the average value of all Die in the DiceFunction
+// If dice function was 8d10, it would return 45 (average of 1d8 is 4.5)
 func (d DiceFunction) Evaluate() int {
 	sum := 0
 	for i := 0; i < len(d.Dice); i++ {
-		sum += int(d.Dice[i])
+		sum += int(d.Dice[i]) + 1
 	}
 	sum = sum / 2
 	return sum + d.Constant
