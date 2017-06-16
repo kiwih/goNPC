@@ -10,8 +10,9 @@ type NPC struct {
 	HitPoints        DiceFunction `json:"-"`
 	BaseStatBlock    StatBlock
 	ProficiencyBonus int
+	Race             RaceTraits
 
-	Race RaceTraits
+	Items []Item
 }
 
 //ACMod is for modif
