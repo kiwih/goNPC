@@ -21,6 +21,7 @@ var BanditCaptain = NPC{
 	Items: []Item{
 		Dagger,
 		StuddedLeather,
+		NecklaceOfFireballs,
 	},
 }
 
@@ -52,15 +53,17 @@ var NecklaceOfFireballs = Item{
 	Attributes: "This necklace has 1d6 + 3 beads hanging from it. You can use an action to detach a bead and throw it up to 60 feet away. When it reaches the end of its trajectory, the bead detonates as a 3rd-­‐‐level fireball spell (save DC 15). You can hurl multiple beads, or even the whole necklace, as one action. When you do so, increase the level of the fireball by 1 for each bead beyond the first. ",
 	Features: []Feature{
 		{
-			Name: "Fireballs",
+			Name: "Necklace of Fireballs",
 			Actions: []Action{
 				{
-					Name:         "Throw Bead",
-					ActionType:   ActionTypeSpell,
-					DamageType:   DamageTypeFire,
-					DamageDice:   DiceFunction{Dice: RepeatDie(DieTypeD6, 8)},
-					TargetSaveDC: AbilityScores{Dex: 15},
-					MaxRange:     60,
+					Name:          "Throw Bead",
+					ActionType:    ActionTypeSpell,
+					DamageType:    DamageTypeFire,
+					AlwaysHits:    true,
+					MagicalDamage: true,
+					DamageDice:    DiceFunction{Dice: RepeatDie(DieTypeD6, 8)},
+					TargetSaveDC:  AbilityScores{Dex: 15},
+					MaxRange:      60,
 				},
 			},
 		},
@@ -79,14 +82,14 @@ var Dagger = Item{
 			Name: "Dagger",
 			Actions: []Action{
 				{
-					Name:       "Dagger (Stab)",
+					Name:       "Stab",
 					ActionType: ActionTypeMeleeWeaponAttack,
 					Finesse:    true,
 					DamageType: DamageTypePiercing,
 					DamageDice: DiceFunction{Dice: []DieType{DieTypeD4}},
 				},
 				{
-					Name:       "Dagger (Throw)",
+					Name:       "Throw",
 					ActionType: ActionTypeThrownWeaponAttack,
 					Finesse:    true,
 					DamageType: DamageTypePiercing,

@@ -37,6 +37,8 @@ type Action struct {
 
 	DamageDice DiceFunction //if appropriate
 
+	AlwaysHits bool //this should be set if it is something that either always hits, or something that provides only a "save for half" e.g. fireballs
+
 	UseSpellSaveDC bool          //If true, replaces the positive values in TargetSaveDC with the attackers Spell Save DC
 	TargetSaveDC   AbilityScores //If the target needs to make a save, this stores the save value (use any positive value in the appropriate slot if it's based on caster spell save dc)
 
@@ -140,4 +142,54 @@ func (a Action) Damage(n NPC) DiceFunction {
 	d := a.DamageDice
 	d.Constant += a.attackVal(n, false)
 	return d
+}
+
+//DamageString returns the DamageDice function as a nice string, taking into account all player stats
+func (a Action) DamageString(n NPC) string {
+	return a.Damage(n).String()
+}
+
+//AttackString returns the nice "+x to hit" string
+// it can also say "DC x Dex to half"
+func (a Action) AttackString(n NPC) string {
+	s := ""
+	if !a.AlwaysHits {
+		s += fmt.Sprintf("+%d to hit", a.AttackModifier(n))
+	}
+	saves := a.SaveDC(n)
+	saveStr := ""
+	if saves.Cha > 0 {
+		saveStr += fmt.Sprintf("DC %d Charisma to half", saves.Cha)
+	}
+	if saves.Con > 0 {
+		saveStr += fmt.Sprintf("DC %d Constitution to half", saves.Con)
+	}
+	if saves.Dex > 0 {
+		saveStr += fmt.Sprintf("DC %d Dexterity to half", saves.Dex)
+	}
+	if saves.Int > 0 {
+		saveStr += fmt.Sprintf("DC %d Intelligence to half", saves.Int)
+	}
+	if saves.Str > 0 {
+		saveStr += fmt.Sprintf("DC %d Strength to half", saves.Str)
+	}
+	if saves.Wis > 0 {
+		saveStr += fmt.Sprintf("DC %d Wisdom to half", saves.Wis)
+	}
+	if saveStr != "" && s != "" {
+		return s + "(" + saveStr + ")"
+	}
+	if saveStr != "" {
+		return saveStr
+	}
+	return s
+}
+
+//DamageTypeString gets a nice "magical fire" string for damage type on an action
+func (a Action) DamageTypeString() string {
+	s := ""
+	if a.MagicalDamage {
+		s += "magical "
+	}
+	return s + string(a.DamageType)
 }

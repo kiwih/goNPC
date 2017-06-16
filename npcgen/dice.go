@@ -57,11 +57,17 @@ func (d DiceFunction) String() string {
 	curCount := -1
 	buildStr := ""
 
+	addPlus := false
+
 	for i := 0; i < len(d.Dice); i++ {
 		if d.Dice[i] != lastType {
 			if curCount > 0 {
 				//because the dice type has changed, we can add the current accumulated dice type to the string
-				buildStr += strconv.Itoa(int(curCount)) + "d" + strconv.Itoa(int(lastType)) + " + "
+				if addPlus {
+					buildStr += " + "
+				}
+				buildStr += strconv.Itoa(int(curCount)) + "d" + strconv.Itoa(int(lastType))
+				addPlus = true
 			}
 			curCount = 1
 			lastType = d.Dice[i]
@@ -71,7 +77,14 @@ func (d DiceFunction) String() string {
 	}
 
 	//We need the last line added manually because there's no change after the last die, but we still need it added
-	buildStr += strconv.Itoa(int(curCount)) + "d" + strconv.Itoa(int(lastType)) + " + "
+	if addPlus {
+		buildStr += " + "
+	}
 
-	return fmt.Sprintf("%d (%s%d)", d.Evaluate(), buildStr, d.Constant)
+	buildStr += strconv.Itoa(int(curCount)) + "d" + strconv.Itoa(int(lastType))
+	if d.Constant != 0 {
+		return fmt.Sprintf("%d (%s + %d)", d.Evaluate(), buildStr, d.Constant)
+	}
+
+	return fmt.Sprintf("%d (%s)", d.Evaluate(), buildStr)
 }
