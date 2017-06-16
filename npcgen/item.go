@@ -15,8 +15,8 @@ type Item struct {
 
 	MinValue  int
 	MaxValue  int
-	MinWeight int
-	MaxWeight int
+	MinWeight float32
+	MaxWeight float32
 
 	Attributes string
 	Features   []Feature //e.g. an item might increase your strength //e.g. you can stab with a dagger //e.g. you can parry with a sword
@@ -25,4 +25,9 @@ type Item struct {
 //RandomItem returns a random item
 func RandomItem(t ItemType) Item {
 	return Item{}
+}
+
+//GetActions provides all actions that an item can do, with appropriate values calcuated from a player's statblock
+func (i Item) GetActions(psb StatBlock) []Action {
+	return nil //TODO
 }
