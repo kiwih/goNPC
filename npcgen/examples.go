@@ -20,7 +20,7 @@ var BanditCaptain = NPC{
 	Race: Human,
 	Items: []Item{
 		Dagger,
-		StuddedLeather,
+		PlusOneStuddedLeather,
 		Shield,
 	},
 }
@@ -97,6 +97,17 @@ var Dagger = Item{
 		},
 	},
 }
+
+var StuddedLeatherAC = Feature{
+	Name: "Studded Leather AC",
+	ACSet: &ACSet{
+		Base: 12,
+		AddMaxAbilityScores: AbilityScores{
+			Dex: AbilityScoreUnlimited,
+		},
+	},
+}
+
 var StuddedLeather = Item{
 	Name:       "Studded Leather",
 	MinValue:   45,
@@ -105,15 +116,7 @@ var StuddedLeather = Item{
 	MaxWeight:  13,
 	Attributes: "",
 	Features: []Feature{
-		{
-			Name: "Studded Leather AC",
-			ACSet: &ACSet{
-				Base: 12,
-				AddMaxAbilityScores: AbilityScores{
-					Dex: AbilityScoreUnlimited,
-				},
-			},
-		},
+		StuddedLeatherAC,
 	},
 }
 
@@ -125,15 +128,7 @@ var PlusOneStuddedLeather = Item{
 	MaxWeight:  13,
 	Attributes: "",
 	Features: []Feature{
-		{
-			Name: "Studded Leather AC",
-			ACSet: &ACSet{
-				Base: 12,
-				AddMaxAbilityScores: AbilityScores{
-					Dex: AbilityScoreUnlimited,
-				},
-			},
-		},
+		StuddedLeatherAC,
 		{
 			Name:       "Plus One Bonus",
 			ACModifier: 1,
