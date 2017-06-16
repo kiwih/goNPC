@@ -47,9 +47,6 @@ type Action struct {
 	MaxRange   int //the maximum range for an attack, if ShortRange is set, this is the range that attacks will have disadv, if not set, this is the max range
 }
 
-//if Melee and short/longRange, it's probably a melee/thrown weapon
-//if not Melee and short/longRange, it's probably a ranged weapon
-
 //AttackModifier calculates the attack modifier for an action given the attacking npc "n"
 func (a Action) AttackModifier(n NPC) int {
 	//ActionTypeSpell has no modifier
@@ -63,7 +60,7 @@ func (a Action) AttackModifier(n NPC) int {
 	AttackDex := n.DexAttackModifier() + n.ProficiencyBonus
 	AttackSpell := n.SpellAttackModifier() + n.ProficiencyBonus
 
-	//TODO: Based on the player statblock, and the type of action, calculate the attack modifier
+	//Based on the player stats, and the type of action, calculate the attack modifier
 
 	switch a.ActionType {
 	case ActionTypeMeleeAttack:
