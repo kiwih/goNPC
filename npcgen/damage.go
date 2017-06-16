@@ -5,7 +5,7 @@ type DamageType string
 
 const (
 	//DamageTypeFire is for the fire damage type
-	DamageTypeFire DamageType = "Fire"
+	DamageTypeFire DamageType = "fire"
 
-	DamageTypePiercing DamageType = "Piercing"
+	DamageTypePiercing DamageType = "piercing"
 )
