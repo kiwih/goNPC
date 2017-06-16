@@ -74,18 +74,30 @@ func (n NPC) SpellSaveDC() int {
 }
 
 //SpellAttackModifier returns the spell attack modiifer for a caster. If the NPC cannot cast, the minimum value is returned.
-func (n NPC) SpellAttackModifier() int {
+func (n NPC) SpellAttackModifier(addProf bool) int {
+	// prof := 0
+	// if addProf {
+	// 	prof = n.ProficiencyBonus
+	// }
 	return 0 //TODO
 }
 
 //StrAttackModifier returns the strength-based attack modifier for an npc.
-func (n NPC) StrAttackModifier() int {
-	return 0 //TODO
+func (n NPC) StrAttackModifier(addProf bool) int {
+	prof := 0
+	if addProf {
+		prof = n.ProficiencyBonus
+	}
+	return n.StatBlock().Str.Modifier() + prof
 }
 
 //DexAttackModifier returns the dexterity-based attack modifier for an npc.
-func (n NPC) DexAttackModifier() int {
-	return 0 //TODO
+func (n NPC) DexAttackModifier(addProf bool) int {
+	prof := 0
+	if addProf {
+		prof = n.ProficiencyBonus
+	}
+	return n.StatBlock().Dex.Modifier() + prof
 }
 
 //GetAllActions returns all Actions that a NPC can do

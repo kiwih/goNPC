@@ -54,9 +54,9 @@ func (a Action) AttackModifier(n NPC) int {
 
 	//Actions need to depend on ability scores, e.g. when casting a spell we use spellcasting ability, etc, thrown weapons vs other things etc
 
-	AttackStr := n.StrAttackModifier() + n.ProficiencyBonus //we assume that NPCs don't ever attack with things they aren't proficient with
-	AttackDex := n.DexAttackModifier() + n.ProficiencyBonus
-	AttackSpell := n.SpellAttackModifier() + n.ProficiencyBonus
+	AttackStr := n.StrAttackModifier(true) //we assume that NPCs don't ever attack with things they aren't proficient with
+	AttackDex := n.DexAttackModifier(true)
+	AttackSpell := n.SpellAttackModifier(true)
 
 	//Based on the player stats, and the type of action, calculate the attack modifier
 
