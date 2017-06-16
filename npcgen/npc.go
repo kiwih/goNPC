@@ -25,7 +25,32 @@ type ACMod struct {
 
 //AC returns the final AC of the character
 func (n NPC) AC() int {
-	return 10 //TODO
+	/*
+		Things that change base AC (10 + dex):
+			armor (light, med, heavy)
+			spells (like mage armor or barkskin)
+			class features (like unarmored defense or the dragon sorcerer one)
+		Things that modify AC:
+			shields
+			spells (like shield of faith)
+			class features (like protection fighting style)
+			magic items (like ioun stone of protection)
+	*/
+	// AC algorithm:
+	// Start at top of modifier stack (furthest from inherent properties) then go down
+	// Keep track of modifiers along the way, but update AC if a more inherent method is available
+	// e.g. spells -> items -> class features -> racial traits -> base AC
+	/*
+		baseAC = 10 + Dex.Modifier()
+		for _, item in range items
+			if item.isArmor
+				if calculateAC(item) > baseAC
+					baseAC = calculateAC(item)
+			if item.modifiesAC
+				acMod += item.acMod
+		finalAC = baseAC + acMod
+	*/
+	return 10 + n.StatBlock().Dex.Modifier() //TODO
 }
 
 //HP returns the final max hitpoints of the character
