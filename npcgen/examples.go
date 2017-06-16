@@ -104,8 +104,59 @@ var StuddedLeather = Item{
 	Attributes: "",
 	Features: []Feature{
 		{
-			Name:       "Armor?", // Is this needed?
-			ACModifier: StuddedLeatherAC,
+			Name: "Studded Leather AC",
+			ACModifier: ACMod{
+				Set:      12,
+				Addition: 0,
+				AddMaxAbilityScores: AbilityScores{
+					Dex: AbilityScoreUnlimited,
+				},
+			},
+		},
+	},
+}
+
+var PlusOneStuddedLeather = Item{
+	Name:       "Studded Leather",
+	MinValue:   45,
+	MaxValue:   45,
+	MinWeight:  13,
+	MaxWeight:  13,
+	Attributes: "",
+	Features: []Feature{
+		{
+			Name: "Studded Leather AC",
+			ACModifier: ACMod{
+				Set:      12,
+				Addition: 0,
+				AddMaxAbilityScores: AbilityScores{
+					Dex: AbilityScoreUnlimited,
+				},
+			},
+		},
+		{
+			Name: "Plus One Bonus",
+			ACModifier: ACMod{
+				Addition: 1,
+			},
+		},
+	},
+}
+
+// TODO: currently we have no way of distinguishing between something that sets AC to 0 and something that doesn't set AC
+var Shield = Item{
+	Name:       "Shield",
+	MinValue:   10,
+	MaxValue:   10,
+	MinWeight:  6,
+	MaxWeight:  6,
+	Attributes: "",
+	Features: []Feature{
+		{
+			Name: "Shield AC",
+			ACModifier: ACMod{
+				Addition: 2,
+			},
 		},
 	},
 }
@@ -113,15 +164,6 @@ var StuddedLeather = Item{
 // BaseAC is the way we calculate AC for someone not wearing any clothes
 var BaseAC = ACMod{
 	Set:      10,
-	Addition: 0,
-	AddMaxAbilityScores: AbilityScores{
-		Dex: AbilityScoreUnlimited,
-	},
-}
-
-// BaseAC is the way we calculate AC for someone not wearing any clothes
-var StuddedLeatherAC = ACMod{
-	Set:      12,
 	Addition: 0,
 	AddMaxAbilityScores: AbilityScores{
 		Dex: AbilityScoreUnlimited,
