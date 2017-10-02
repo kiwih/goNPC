@@ -7,8 +7,8 @@ import (
 	"os"
 	"path"
 
-	"github.com/kiwih/npc-gen/npcgen"
 	"github.com/kiwih/npc-gen/npcserver"
+	"github.com/kiwih/npc-gen/questgen"
 )
 
 func getExecLoc() string {
@@ -54,7 +54,16 @@ func main() {
 
 	execLoc := getExecLoc()
 
-	fmt.Println(npcgen.BanditCaptain.String())
+	//fmt.Println(npcgen.BanditCaptain.String())
+
+	basicQuest := questgen.GenerateQuest(
+		questgen.GetBasicQuestLocations(),
+		questgen.GetBasicQuestNPCs(),
+		questgen.GetBasicQuestItems(),
+		4,
+	)
+
+	fmt.Printf("%+v\n", basicQuest)
 
 	npcserver.StartServer(execLoc+templatesDir, execLoc+publicDir, serverAddress, cookieStoreSalt)
 }
